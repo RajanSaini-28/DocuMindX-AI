@@ -15,7 +15,7 @@ import faiss
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 # 🔑 Gemini API
-genai.configure(api_key=os.getenv("AIzaSyDeezpqkGdXpDrUwaYlqtGwwDjX6x34_-Q"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # ✅ Models
 model = genai.GenerativeModel("models/gemini-2.5-flash")
