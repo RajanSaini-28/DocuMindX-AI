@@ -1,0 +1,12 @@
+streamlit
+google-generativeai
+PyPDF2
+pytesseract
+pdf2image
+opencv-python
+numpy
+audio-recorder-streamlit
+SpeechRecognition
+sentence-transformers
+faiss-cpu
+Pillow
