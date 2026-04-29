@@ -119,11 +119,18 @@ def generate_questions(text):
 # ===========================
 
 def create_vector_store(text):
-    # Split text
     chunks = text.split("\n")
     chunks = [c for c in chunks if len(c.strip()) > 20]
 
+    # 🚨 HANDLE EMPTY TEXT
+    if len(chunks) == 0:
+        return [], None
+
     embeddings = embed_model.encode(chunks)
+
+    # 🚨 HANDLE EMPTY EMBEDDINGS
+    if len(embeddings) == 0:
+        return [], None
 
     dimension = embeddings.shape[1]
     index = faiss.IndexFlatL2(dimension)
