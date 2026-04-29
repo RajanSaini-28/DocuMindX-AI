@@ -3,7 +3,7 @@ import google.generativeai as genai
 from PIL import Image
 import pytesseract
 import pdf2image
-import cv2
+
 import numpy as np
 import os
 
@@ -47,9 +47,12 @@ def extract_text_from_pdf(file):
 
             for img in images:
                 img_np = np.array(img)
-
-                gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
-                blur = cv2.GaussianBlur(gray, (5, 5), 0)
+                ocr_text = pytesseract.image_to_string(img)
+                text += ocr_text
+                
+                
+                # gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
+                # blur = cv2.GaussianBlur(gray, (5, 5), 0)
 
                 thresh = cv2.adaptiveThreshold(
                     blur, 255,
