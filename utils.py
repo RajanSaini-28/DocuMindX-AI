@@ -102,16 +102,37 @@ def summarize_text(text):
 # ===========================
 # ❓ QUESTIONS
 # ===========================
+# def generate_questions(text):
+#     text = clean_text(text)
+
+#     prompt = f"""
+#     Generate 5 important exam questions:
+
+#     {text[:3000]}
+#     """
+
+#     return model.generate_content(prompt).text
+
 def generate_questions(text):
-    text = clean_text(text)
-
     prompt = f"""
-    Generate 5 important exam questions:
+You are an exam expert.
 
-    {text[:3000]}
-    """
+From the following content:
+- Identify PYQ (previous year questions)
+- Identify important repeated topics
+- Predict most probable exam questions
 
-    return model.generate_content(prompt).text
+Give:
+1. Important questions
+2. Predicted questions
+3. High-weight topics
+
+Content:
+{text}
+"""
+
+    response = model.generate_content(prompt)
+    return response.text
 
 
 # ===========================
