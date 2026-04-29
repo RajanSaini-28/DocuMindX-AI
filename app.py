@@ -142,6 +142,10 @@ if files:
     st.session_state.all_text = combined_text
 
     chunks, index = create_vector_store(combined_text)
+
+    if index is None or len(chunks)==0:
+        st.error("❌ No valid text found in PDF. Try another file.")
+        st.stop()
     st.session_state.chunks = chunks
     st.session_state.index = index
 
