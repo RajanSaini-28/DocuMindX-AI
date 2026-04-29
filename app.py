@@ -128,28 +128,70 @@ st.markdown("---")
 # ===========================
 # 📤 FILE UPLOAD
 # ===========================
-files = st.file_uploader("📤 Upload PDFs", type="pdf", accept_multiple_files=True)
+# files = st.file_uploader("📤 Upload PDFs", type="pdf", accept_multiple_files=True)
 
-if files:
+# if files:
+#     combined_text = ""
+
+#     with st.spinner("📖 Processing PDFs..."):
+#         for f in files:
+#             text = extract_text_from_pdf(f)
+#             if text:
+#                 combined_text += text + "\n"
+
+#     st.session_state.all_text = combined_text
+
+#     chunks, index = create_vector_store(combined_text)
+
+#     if index is None or len(chunks)==0:
+#         st.error("❌ No valid text found in PDF. Try another file.")
+#         st.stop()
+#     st.session_state.chunks = chunks
+#     st.session_state.index = index
+
+#     st.success(f"✅ {len(files)} files processed successfully!")
+
+
+uploaded_files = st.file_uploader(
+    "📤 Upload PDFs",
+    type="pdf",
+    accept_multiple_files=True
+)
+
+file_tags = {}
+
+if uploaded_files:
+    st.subheader("📌 Tag your PDFs")
+
+    for file in uploaded_files:
+        tag = st.selectbox(
+            f"Select type for {file.name}",
+            ["Notes", "PYQ", "Book"],
+            key=file.name
+        )
+        file_tags[file.name] = tag
+
     combined_text = ""
 
     with st.spinner("📖 Processing PDFs..."):
-        for f in files:
-            text = extract_text_from_pdf(f)
+        for file in uploaded_files:
+            text = extract_text_from_pdf(file)
             if text:
-                combined_text += text + "\n"
+                tagged_text = f"[{file_tags[file.name]}]\n{text}"
+                combined_text += tagged_text + "\n"
 
     st.session_state.all_text = combined_text
 
     chunks, index = create_vector_store(combined_text)
 
-    if index is None or len(chunks)==0:
+    if index is None or len(chunks) == 0:
         st.error("❌ No valid text found in PDF. Try another file.")
         st.stop()
+
     st.session_state.chunks = chunks
     st.session_state.index = index
 
-    st.success(f"✅ {len(files)} files processed successfully!")
+    st.success(f"✅ {len(uploaded_files)} files processed with tags!")
 
 # ===========================
 # 📊 TABS
